@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import {  Outlet, useNavigate } from "react-router-dom";
 
 function LandingPage() {
     const navigate = useNavigate()

@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "font-awesome/css/font-awesome.min.css"; 
 import L from "leaflet";
 
-// Fix for default marker icons in Leaflet
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-    iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+// Create a custom divIcon with Font Awesome
+const redMarkerIcon = L.divIcon({
+    html: '<i class="fa fa-map-marker" style="color:red; font-size: 2rem;"></i>',
+    className: "custom-marker", // Optional class for further styling
+    iconSize: [60, 90],
 });
+
+function UpdateMapView({ lat, lng }) {
+    const map = useMap();
+
+    useEffect(() => {
+        if (lat && lng) {
+            map.setView([lat, lng], map.getZoom());
+        }
+    }, [lat, lng, map]);
+
+    return null;
+}
 
 export default function Gmap() {
     const { lat, lng } = useSelector((state) => state.location);
@@ -23,10 +35,11 @@ export default function Gmap() {
                 style={{ height: "100%", width: "100%" }}
             >
                 <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    attribution='&copy; <a href="https://www.esri.com">Esri</a> &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
                 />
-                <Marker position={[lat, lng]}>
+                <UpdateMapView lat={lat} lng={lng} />
+                <Marker position={[lat, lng]} icon={redMarkerIcon}>
                     <Popup>
                         Location: {lat}, {lng}
                     </Popup>
