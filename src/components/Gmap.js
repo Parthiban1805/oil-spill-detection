@@ -5,10 +5,9 @@ import "leaflet/dist/leaflet.css";
 import "font-awesome/css/font-awesome.min.css"; 
 import L from "leaflet";
 
-// Create a custom divIcon with Font Awesome
 const redMarkerIcon = L.divIcon({
     html: '<i class="fa fa-map-marker" style="color:red; font-size: 2rem;"></i>',
-    className: "custom-marker", // Optional class for further styling
+    className: "custom-marker", 
     iconSize: [60, 90],
 });
 
